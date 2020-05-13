@@ -27,6 +27,7 @@ namespace ofxARKit {
             return alignment;
         }
         
+        
         // here for convinience, but you may want to build your own.
         ofMesh planeMesh;
         
@@ -42,6 +43,9 @@ namespace ofxARKit {
         // colors, just for fun
         ofFloatColor debugColor;
         vector<ofFloatColor> colors;
+        
+        ARPlaneClassification classification {ARPlaneClassificationNone};
+        ARPlaneClassificationStatus classificationStatus {ARPlaneClassificationStatusNotAvailable};
         
         void buildMesh(){
             

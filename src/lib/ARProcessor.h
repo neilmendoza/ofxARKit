@@ -58,7 +58,7 @@ namespace ofxARKit {
         void update();
         
         //! Draws the camera frame
-        void draw();
+        void draw(bool flip = false);
         
         //! Alias for drawing the camera frame for better semantics
         void drawFrame();

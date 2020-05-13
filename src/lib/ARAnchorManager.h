@@ -85,12 +85,12 @@ namespace ofxARKit {
             void setNumberOfPlanesToTrack(int num=0);
             
             //! Returns the vector of currently found planes
-            std::vector<PlaneAnchorObject> getPlaneAnchors(){
+            std::vector<PlaneAnchorObject>& getPlaneAnchors(){
                 return planes;
             }
             
             //! Returns the vector of currently found reference image anchors
-            std::vector<ImageAnchorObject> getImageAnchors(){
+            std::vector<ImageAnchorObject>& getImageAnchors(){
                 return imageAnchors;
             }
 #if AR_FACE_TRACKING
@@ -181,6 +181,8 @@ namespace ofxARKit {
             //! Allows you to set a callback function to run when a new plane is added.
             //! Returns the reference to that plane.
             void onPlaneAdded(std::function<void(PlaneAnchorObject plane)> func);
+            
+            static string planeClassificationToString(ARPlaneClassification classification);
         };
     }
 }

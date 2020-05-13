@@ -157,7 +157,7 @@ namespace ofxARKit {
             void update();
 
             //! Render the camera image
-            void draw();
+            void draw(float flip = 0.f);
      
         
             
@@ -165,7 +165,7 @@ namespace ofxARKit {
             private:
 
                 std::string vertex = STRINGIFY(
-
+                    uniform float flip;
                                                           
                     attribute vec2 position;
                     varying vec2 vUv;
@@ -173,7 +173,7 @@ namespace ofxARKit {
                     const vec2 scale = vec2(0.5,0.5);
                     void main(){
                         vec2 uV = position.xy * scale + scale;
-                        vUv = vec2(uV.s, 1.0 - uV.t);
+                        vUv = vec2(uV.s, flip * uV.t + (1.0 - flip) * (1.0 - uV.t));
                                                                                                                                
                         gl_Position = vec4(position,0.0,1.0);
                                                                        

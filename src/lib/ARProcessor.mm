@@ -51,8 +51,8 @@ namespace ofxARKit {
         anchorController = ARAnchorManager::create(session);
     }
     
-    void ARProcessor::draw(){
-        camera->draw();
+    void ARProcessor::draw(bool flip){
+        camera->draw(flip?1.f:0.f);
     }
     
     void ARProcessor::update(){

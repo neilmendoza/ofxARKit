@@ -178,7 +178,7 @@ namespace ofxARKit {
             //NSLog(@"view is %@",NSStringFromCGRect(viewport));
         }
         
-        void Camera::draw(){
+        void Camera::draw(float flip){
             
             
             // get and draw texture
@@ -187,6 +187,7 @@ namespace ofxARKit {
             
             if(_tex){
                 shader.begin();
+                shader.setUniform1f("flip", flip);
                 shader.setUniformTexture("tex", CVOpenGLESTextureGetTarget(_tex), CVOpenGLESTextureGetName(_tex), 0);
                 
                 mesh.draw();

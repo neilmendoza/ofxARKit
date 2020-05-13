@@ -27,7 +27,7 @@ namespace ofxARKit {
         ARSession * session;
     public:
         ARDebugInfo(){}
-        ARDebugInfo(ARSession * session,int x=40,int y=40){
+        ARDebugInfo(ARSession * session,int x=40,int y=200){
             this->session = session;
             this->x = x;
             this->y = y;

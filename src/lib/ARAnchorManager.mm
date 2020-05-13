@@ -199,7 +199,6 @@ namespace ofxARKit  {
                         ofVec3f center = convert<vector_float3,ofVec3f>(pa.center);
                         ofVec3f extent = convert<vector_float3,ofVec3f>(pa.extent);
                         
-                        
                         // neat trick to search in vector with c++ 11, seems to work better than for loop
                         // https://stackoverflow.com/questions/15517991/search-a-vector-of-objects-by-object-attribute
                         auto it = find_if(planes.begin(), planes.end(), [=](const PlaneAnchorObject& obj) {
@@ -210,7 +209,8 @@ namespace ofxARKit  {
                         // if that's the case, then add it.
                         if(it == planes.end()){
                             
-                            ofLog()<<"Plane added";
+                            ofLogNotice() << "Plane added";
+                            
                             PlaneAnchorObject plane;
                             
                             plane.transform = paTransform;
@@ -221,9 +221,18 @@ namespace ofxARKit  {
                             plane.uuid = anchor.identifier;
                             plane.rawAnchor = pa;
                             
+                            if (ARPlaneAnchor.isClassificationSupported)
+                            {
+                                plane.classification = pa.classification;
+                                plane.classificationStatus = pa.classificationStatus;
+                            }
                             if (isIos113()) {
                                 ARPlaneGeometry * geo = pa.geometry;
                                 // transform vertices and uvs
+                                plane.vertices.clear();
+                                plane.uvs.clear();
+                                plane.colors.clear();
+                                plane.indices.clear();
                                 for(NSInteger i = 0; i < geo.vertexCount; ++i){
                                     vector_float3 vert = geo.vertices[i];
                                     vector_float2 uv = geo.textureCoordinates[i];
@@ -268,8 +277,18 @@ namespace ofxARKit  {
                                 planes[index].uuid = anchor.identifier;
                                 planes[index].rawAnchor = pa;
                                 
+                                if (ARPlaneAnchor.isClassificationSupported)
+                                {
+                                    planes[index].classification = pa.classification;
+                                    planes[index].classificationStatus = pa.classificationStatus;
+                                }
+                                
                                 if (isIos113()) {
                                     ARPlaneGeometry * geo = pa.geometry;
+                                    plane.vertices.clear();
+                                    plane.uvs.clear();
+                                    plane.colors.clear();
+                                    plane.indices.clear();
                                     // transform vertices and uvs
                                     for(NSInteger i = 0; i < geo.vertexCount; ++i){
                                         vector_float3 vert = geo.vertices[i];
@@ -544,6 +563,45 @@ namespace ofxARKit  {
         void ARAnchorManager::onPlaneAdded(std::function<void(PlaneAnchorObject plane)> func){
             _onPlaneAdded = func;
         }
+        
+        string ARAnchorManager::planeClassificationToString(ARPlaneClassification classification)
+        {
+            switch (classification)
+            {
+                case ARPlaneClassificationNone:
+                    return "none";
+                    break;
+                    
+                case ARPlaneClassificationWall:
+                    return "wall";
+                    break;
+                    
+                case ARPlaneClassificationFloor:
+                    return "floor";
+                    break;
+                                    
+                case ARPlaneClassificationCeiling:
+                    return "ceiling";
+                    break;
+                                    
+                case ARPlaneClassificationTable:
+                    return "table";
+                    break;
+                                    
+                case ARPlaneClassificationSeat:
+                    return "seat";
+                    break;
+
+                case ARPlaneClassificationWindow:
+                    return "window";
+                    break;
+
+                case ARPlaneClassificationDoor:
+                    return "door";
+                    break;
+            }
+        }
+        
 
     }
 
